@@ -1,26 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateLoginDto } from './dto/create-login.dto';
-import { UpdateLoginDto } from './dto/update-login.dto';
 
 @Injectable()
 export class LoginService {
+  private users = [
+    {
+      email: 'unisha@gmail.com',
+      password: 'test@123',
+    },
+    {
+      email: 'bibek@gmail.com',
+      password: 'test@123',
+    },
+    {
+      email: 'selina@gmail.com',
+      password: 'test@123',
+    },
+  ];
+
   create(createLoginDto: CreateLoginDto) {
-    return 'This action adds a new login';
-  }
-
-  findAll() {
-    return `This action returns all login`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} login`;
-  }
-
-  update(id: number, updateLoginDto: UpdateLoginDto) {
-    return `This action updates a #${id} login`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} login`;
+    const { email } = createLoginDto;
+    const user = this.users.find((user) => user.email === email);
+    if (user) {
+      return {
+        status: 'success',
+      };
+    } else {
+      throw new BadRequestException();
+    }
   }
 }
